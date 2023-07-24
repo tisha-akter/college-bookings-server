@@ -9,10 +9,9 @@
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/",
-            "methods": ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-            "installCommand": "npm install"
-            
+            "dest": "/", 
+            "methods": ["GET", "POST", "PATCH", "DELETE", "OPTIONS"]
         }
-    ]
+    ],
+    "installCommand": "npm install"
 }
