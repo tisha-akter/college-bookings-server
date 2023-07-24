@@ -31,6 +31,7 @@ async function run() {
 
     const detailsCollection = client.db("CollegeBK").collection("collegeDetails");
     const usersCollection = client.db("CollegeBK").collection("users");
+    const formDataCollection = client.db("CollegeBK").collection("formData");
 
     app.get('/collegeDetails', async (req, res) => {
       const result = await detailsCollection.find().toArray();
@@ -38,6 +39,19 @@ async function run() {
     });
 
 
+    // admissionForm data 
+    app.post('/formData', async (req, res) => {
+      try {
+        const newFormData = req.body;
+        const result = await formDataCollection.insertOne(newFormData);
+        res.send({ insertedId: result.insertedId });
+      } catch (error) {
+        res.status(500).send({ error: "Internal server error" });
+      }
+    });
+
+
+    // users related api 
     app.get('/users', async (req, res) => {
       const result = await usersCollection.find().toArray();
       res.send(result);
