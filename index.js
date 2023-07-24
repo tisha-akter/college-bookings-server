@@ -30,12 +30,32 @@ async function run() {
 
 
     const detailsCollection = client.db("CollegeBK").collection("collegeDetails");
+    const usersCollection = client.db("CollegeBK").collection("users");
 
     app.get('/collegeDetails', async (req, res) => {
-        const result = await detailsCollection.find().toArray();
-        res.send(result);
-      })
-    
+      const result = await detailsCollection.find().toArray();
+      res.send(result);
+    });
+
+
+    // app.get('/users', async (req, res) => {
+    //   const result = await usersCollection.find().toArray();
+    //   res.send(result);
+    // });
+
+
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      // const query = { email: user?.email }
+      // const existingUser = await usersCollection.findOne(query);
+
+      // if (existingUser) {
+      //   return res.send({ message: 'user already exists' })
+      // }
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
+
 
 
     // Send a ping to confirm a successful connection
@@ -51,9 +71,9 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-    res.send('college server is running')
+  res.send('college server is running')
 })
 
 app.listen(port, () => {
-    console.log(`College Booking is running on port ${port}`);
+  console.log(`College Booking is running on port ${port}`);
 })
