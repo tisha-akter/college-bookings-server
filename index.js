@@ -32,6 +32,7 @@ async function run() {
     const detailsCollection = client.db("CollegeBK").collection("collegeDetails");
     const usersCollection = client.db("CollegeBK").collection("users");
     const formDataCollection = client.db("CollegeBK").collection("formData");
+    const reviewsCollection = client.db("CollegeBK").collection("reviews");
 
     app.get('/collegeDetails', async (req, res) => {
       const result = await detailsCollection.find().toArray();
@@ -67,6 +68,34 @@ async function run() {
       }
       const result = await usersCollection.insertOne(user);
       res.send(result);
+    });
+
+
+
+    // Create a new route for fetching reviews
+    app.get('/reviews', async (req, res) => {
+      try {
+        const reviews = await reviewsCollection.find().toArray();
+        res.json(reviews);
+      } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    });
+
+    // Create a new route for submitting reviews
+    app.post('/reviews', async (req, res) => {
+      try {
+        const { text, rating } = req.body;
+        if (!text || !rating) {
+          return res.status(400).json({ error: 'Review and rating are required' });
+        }
+
+        // Insert review into the reviews collection (replace with your MongoDB collection)
+        const result = await reviewsCollection.insertOne({ text, rating });
+        res.json(result.ops[0]);
+      } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+      }
     });
 
 
